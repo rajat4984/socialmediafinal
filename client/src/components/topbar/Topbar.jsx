@@ -3,6 +3,7 @@ import "./topbar.css";
 import { Search, Person, Chat, Notifications } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 function Topbar() {
   const { user } = useContext(AuthContext);
@@ -14,25 +15,26 @@ function Topbar() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
   const handleSearch = async () => {
-    // setUpdate(search);
-    // const response = await axios.get("/users/allUsers");
-    // const data = response.data;
+    setUpdate(search);
+    const response = await axios.get("/users/allUsers");
+    const data = response.data;
+    console.log(data);
 
-    // const searchedUser = data.find((item) => {
-    //   return search === item.username;
-    // });
-    console.log("Hello");
+    const searchedUser = data.find((item) => {
+      return search === item.username;
+    });
+    console.log(searchedUser);
 
-    // if(searchedUser!==undefined){
-    //   <Navigate to={`/users?${searchedUser}`}/>
-    // }
+    if (searchedUser !== undefined) {
+      navigate(`profile/${searchedUser.username}`);
+    }
   };
 
-  const logout = ()=>{
+  const logout = () => {
     console.log(sessionStorage.length);
-    sessionStorage.setItem("user",null);
+    sessionStorage.setItem("user", null);
     navigate(0);
-  }
+  };
   return (
     <div className="topbarContainer">
       <div className="topbarLeft">
@@ -67,11 +69,9 @@ function Topbar() {
             <span className="topbarLink">Timeline</span>
           </Link>
 
-      
-            <span className="topbarLink" onClick={logout}>
-              Logout
-            </span>
-        
+          <span className="topbarLink" onClick={logout}>
+            Logout
+          </span>
         </div>
         {/* <div className="topbarIcons">
           <div className="topbarIconsItem">
