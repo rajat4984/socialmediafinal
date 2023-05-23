@@ -47,7 +47,8 @@ function App() {
             />
           <Route
             path="/register"
-            element={user ? <Navigate to="/" /> : <Register />}
+            // element={user ? <Navigate to="/" /> : <Register />}
+            element={<Register />}
           />
           <Route path="/profile/:username" element={<Profile />} />
         </Routes>
