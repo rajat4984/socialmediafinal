@@ -33,6 +33,7 @@ function Topbar() {
   const logout = () => {
     console.log(sessionStorage.length);
     sessionStorage.setItem("user", null);
+    navigate("/login");
     navigate(0);
   };
   return (
@@ -73,20 +74,6 @@ function Topbar() {
             Logout
           </span>
         </div>
-        {/* <div className="topbarIcons">
-          <div className="topbarIconsItem">
-            <Person />
-            <span className="topbarIconsBadge">1</span>
-          </div>
-          <div className="topbarIconsItem">
-            <Chat />
-            <span className="topbarIconsBadge">1</span>
-          </div>
-          <div className="topbarIconsItem">
-            <Notifications />
-            <span className="topbarIconsBadge">1</span>
-          </div>
-        </div> */}
         <Link to={`/profile/${user?.username}`}>
           <img
             src={
