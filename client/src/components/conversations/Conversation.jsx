@@ -20,7 +20,6 @@ export default function Conversation({ conversation, currentUser }) {
     };
     getUser();
   }, []);
-  // console.log(user);
 
   return (
     <div className="conversation">

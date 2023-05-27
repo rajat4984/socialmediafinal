@@ -37,6 +37,7 @@ export default function Rightbar({ user }) {
         });
         dispatch({ type: "UNFOLLOW", payload: user._id });
         setFollowed(!followed);
+        deleteConversation();
       } else {
         await axios.put(`/users/${user._id}/follow`, {
           userId: currentUser._id,
@@ -57,6 +58,17 @@ export default function Rightbar({ user }) {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const deleteConversation = async () => {
+    const res = await axios.get("/conversations/" + user?._id);
+    const data = res.data;
+    const myConversation = data.filter((conv) => {
+      console.log(conv);
+      return conv.members[0] === loggedUser._id && conv.members[1] === user._id;
+    });
+    console.log(myConversation);
+    await axios.delete("/conversations/deleteConv/" + myConversation[0]._id);
   };
 
   const HomeRightbar = () => {

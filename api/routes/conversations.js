@@ -42,4 +42,16 @@ router.get("/find/:firstUserId/:secondUserId", async (req, res) => {
   }
 });
 
+//delete a conversation
+
+router.delete("/deleteConv/:id", async (req, res) => {
+  try {
+    const conversation = await Conversation.findById(req.params.id);
+    await conversation.deleteOne();
+    res.status(200).json("Conversation has been deleted");
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
