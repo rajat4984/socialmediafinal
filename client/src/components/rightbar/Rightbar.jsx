@@ -15,14 +15,6 @@ export default function Rightbar({ user }) {
   const [followed, setFollowed] = useState(
     loggedUser.followings.includes(user?._id)
   );
-  console.log(user)
-  console.log("logged user")
-  console.log(loggedUser)
-  console.log(user?._id)
-  console.log(loggedUser.followings.includes(user?._id));
-  console.log("followed state")
-  console.log(followed);
-
 
   useEffect(() => {
     const getFriends = async () => {
@@ -32,7 +24,7 @@ export default function Rightbar({ user }) {
       } catch (err) {
         console.log(err);
       }
-      setFollowed(  loggedUser.followings.includes(user?._id))
+      setFollowed(loggedUser.followings.includes(user?._id));
     };
     getFriends();
   }, [user]);
@@ -51,8 +43,20 @@ export default function Rightbar({ user }) {
         });
         dispatch({ type: "FOLLOW", payload: user._id });
         setFollowed(!followed);
+        createConversation();
       }
     } catch (err) {}
+  };
+
+  const createConversation = async () => {
+    const conversation = { senderId: loggedUser._id, receiverId: user?._id };
+
+    try {
+      await axios.post("/conversations", conversation);
+      console.log(conversation);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const HomeRightbar = () => {
@@ -77,7 +81,7 @@ export default function Rightbar({ user }) {
             {followed ? <Remove /> : <Add />}
           </button>
         )}
-        <h4 className="rightbarTitle">User information</h4>
+        {/* <h4 className="rightbarTitle">User information</h4>
         <div className="rightbarInfo">
           <div className="rightbarInfoItem">
             <span className="rightbarInfoKey">City:</span>
@@ -97,28 +101,37 @@ export default function Rightbar({ user }) {
                 : "-"}
             </span>
           </div>
-        </div>
-        <h4 className="rightbarTitle">User friends</h4>
+        </div> */}
+
         <div className="rightbarFollowings">
-          {friends.map((friend) => (
-            <Link
-              to={"/profile/" + friend.username}
-              style={{ textDecoration: "none" }}
-            >
-              <div className="rightbarFollowing">
-                <img
-                  src={
-                    friend.profilePicture
-                      ? PF + friend.profilePicture
-                      : PF + "person/noAvatar.png"
-                  }
-                  alt=""
-                  className="rightbarFollowingImg"
-                />
-                <span className="rightbarFollowingName">{friend.username}</span>
-              </div>
-            </Link>
-          ))}
+          {friends.length === 0 ? (
+            <h4 className="rightbarTitle">No friends</h4>
+          ) : (
+            <>
+              <h4 className="rightbarTitle">User Friends</h4>
+              {friends.map((friend) => (
+                <Link
+                  to={"/profile/" + friend.username}
+                  style={{ textDecoration: "none" }}
+                >
+                  <div className="rightbarFollowing">
+                    <img
+                      src={
+                        friend.profilePicture
+                          ? PF + friend.profilePicture
+                          : PF + "person/noAvatar.png"
+                      }
+                      alt=""
+                      className="rightbarFollowingImg"
+                    />
+                    <span className="rightbarFollowingName">
+                      {friend.username}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </>
+          )}
         </div>
       </>
     );
