@@ -53,7 +53,6 @@ export default function Login() {
                 "Log In"
               )}
             </button>
-            <span className="loginForgot">Forgot Password?</span>
             <Link to="/register">
               <button className="loginRegisterButton">
                 {isFetching ? (
