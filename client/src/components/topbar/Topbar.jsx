@@ -26,7 +26,7 @@ function Topbar() {
     console.log(searchedUser);
 
     if (searchedUser !== undefined) {
-      navigate(`profile/${searchedUser.username}`);
+      navigate(`/profile/${searchedUser.username}`);
     }
   };
 
