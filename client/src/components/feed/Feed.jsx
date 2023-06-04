@@ -27,9 +27,23 @@ export default function Feed({ username }) {
     <div style={{ maxWidth: "500px" }} className="feed">
       <div className="feedWrapper">
         {(!username || username === user.username) && <Share />}
-        {posts.map((p) => (
-          <Post key={p._id} post={p} posts={posts} setPosts={setPosts} />
-        ))}
+        {posts.length === 0 ? (
+          <div
+            style={{
+              position: "absolute",
+              top: "70%",
+              left: "30%",
+              fontSize: "40px",
+              color: "rgb(194, 194, 194)",
+            }}
+          >
+            Follow Other users for more post
+          </div>
+        ) : (
+          posts.map((p) => (
+            <Post key={p._id} post={p} posts={posts} setPosts={setPosts} />
+          ))
+        )}
       </div>
     </div>
   );
