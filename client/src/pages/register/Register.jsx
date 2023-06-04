@@ -38,7 +38,6 @@ function Register() {
   // };
 
   const handleRegistration = async (data) => {
-    console.log(data);
     const { username, email, password } = data;
     const user = {
       username,
