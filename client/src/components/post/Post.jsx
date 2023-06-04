@@ -92,7 +92,8 @@ export default function Post({ post, posts, setPosts }) {
               <span className="postDate">{format(post.createdAt)}</span>
             </div>
             <div className="postTopRight">
-              <MoreVert onClick={handleClick} />
+              {post.userId === currentUser._id ?  <MoreVert onClick={handleClick} /> : <></>}
+             
             </div>
           </div>
           <div className="postCenter">
