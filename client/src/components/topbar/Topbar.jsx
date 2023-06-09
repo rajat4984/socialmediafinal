@@ -18,7 +18,6 @@ function Topbar() {
     setUpdate(search);
     const response = await axios.get("/users/allUsers");
     const data = response.data;
-    console.log(data);
 
     const searchedUser = data.find((item) => {
       return search === item.username;
