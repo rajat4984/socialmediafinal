@@ -6,10 +6,12 @@ import Rightbar from "../../components/rightbar/Rightbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
+import { AiFillCamera } from "react-icons/ai";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [user, setUser] = useState({});
+  const [profilePic, setProfilePic] = useState(null);
   const username = useParams().username;
 
   useEffect(() => {
@@ -19,6 +21,27 @@ export default function Profile() {
     };
     fetchUser();
   }, [username]);
+
+  const handleProfilePic = async (file) => {
+    const newUser = {
+      userId: user._id,
+    };
+    if (file) {
+      const data = new FormData();
+      const fileName = Date.now() + file.name;
+      data.append("name", fileName);
+      data.append("file", file);
+      newUser.profilePicture = fileName;
+      try {
+        await axios.post("/upload", data);
+        await axios.put(`/users/${user._id}`, {
+          userId: user._id,
+          profilePicture: fileName,
+        });
+        window.location.reload();
+      } catch (err) {}
+    }
+  };
 
   return (
     <>
@@ -46,6 +69,27 @@ export default function Profile() {
                 }
                 alt=""
               />
+              <label htmlFor="file">
+                <AiFillCamera
+                  style={{
+                    fontSize: "35px",
+                    position: "absolute",
+                    top: "85%",
+                    left: "52%",
+                    cursor: "pointer",
+                  }}
+                />
+                <input
+                  type="file"
+                  id="file"
+                  accept=".png,.jpeg,.jpg"
+                  style={{ display: "none" }}
+                  onChange={(e) => {
+                    console.log(e.target.files[0]);
+                    handleProfilePic(e.target.files[0]);
+                  }}
+                />
+              </label>
             </div>
             <div className="profileInfo">
               <h4 className="profileInfoName">{user.username}</h4>
