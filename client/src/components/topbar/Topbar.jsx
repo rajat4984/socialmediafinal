@@ -58,21 +58,6 @@ function Topbar() {
         </div>
       </div>
       <div className="topbarRight">
-        <div className="topbarLinks">
-          <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-            <span className="topbarLink">Homepage</span>
-          </Link>
-          <Link
-            to={`/profile/${user?.username}`}
-            style={{ color: "white", textDecoration: "none" }}
-          >
-            <span className="topbarLink">Timeline</span>
-          </Link>
-
-          <span className="topbarLink" onClick={logout}>
-            Logout
-          </span>
-        </div>
         <Link to={`/profile/${user?.username}`}>
           <img
             src={
@@ -84,6 +69,10 @@ function Topbar() {
             className="topbarImg"
           />
         </Link>
+
+          <span className="topbarLink" onClick={logout}>
+            Logout
+          </span>
       </div>
     </div>
   );
