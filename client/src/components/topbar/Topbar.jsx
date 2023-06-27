@@ -59,7 +59,7 @@ function Topbar() {
       </div>
       <div className="topbarRight">
         <Link to={`/profile/${myUser?.username}`}>
-          {console.log(myUser)}
+  
           <img
             src={
               myUser?.profilePicture

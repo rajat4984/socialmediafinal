@@ -36,7 +36,6 @@ export default function Profile() {
       const user = JSON.parse(sessionStorage.getItem("user"));
       user.profilePicture = fileName;
       sessionStorage.setItem("user", JSON.stringify(user));
-      console.log(user);
       try {
         await axios.post("/upload", data);
         await axios.put(`/users/${profileUser._id}`, {
@@ -52,7 +51,7 @@ export default function Profile() {
   return (
     <>
       <Topbar />
-      <div className="profile">
+      <div className="profile" >
         <Sidebar />
         <div className="profileRight">
           <div className="profileRightTop">
@@ -102,8 +101,8 @@ export default function Profile() {
               <span className="profileInfoDesc">{profileUser.desc}</span>
             </div>
           </div>
-          <div className="profileRightBottom">
-            <Feed username={username} />
+          <div className="profileRightBottom" style={{marginBottom:"2em"}}>
+            <Feed isProfile={true} username={username} />
             <Rightbar user={profileUser} />
           </div>
         </div>
