@@ -3,28 +3,29 @@ import Topbar from "../../components/topbar/Topbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Feed from "../../components/feed/Feed";
 import Rightbar from "../../components/rightbar/Rightbar";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router";
 import { AiFillCamera } from "react-icons/ai";
+import { AuthContext } from "../../context/AuthContext";
 
 export default function Profile() {
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
-  const [user, setUser] = useState({});
+  const [profileUser, setProfileUser] = useState({});
   const [profilePic, setProfilePic] = useState(null);
   const username = useParams().username;
 
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`/users?username=${username}`);
-      setUser(res.data);
+      setProfileUser(res.data);
     };
     fetchUser();
   }, [username]);
 
   const handleProfilePic = async (file) => {
     const newUser = {
-      userId: user._id,
+      userId: profileUser._id,
     };
     if (file) {
       const data = new FormData();
@@ -32,12 +33,17 @@ export default function Profile() {
       data.append("name", fileName);
       data.append("file", file);
       newUser.profilePicture = fileName;
+      const user = JSON.parse(sessionStorage.getItem("user"));
+      user.profilePicture = fileName;
+      sessionStorage.setItem("user", JSON.stringify(user));
+      console.log(user);
       try {
         await axios.post("/upload", data);
-        await axios.put(`/users/${user._id}`, {
-          userId: user._id,
+        await axios.put(`/users/${profileUser._id}`, {
+          userId: profileUser._id,
           profilePicture: fileName,
         });
+
         window.location.reload();
       } catch (err) {}
     }
@@ -54,8 +60,8 @@ export default function Profile() {
               <img
                 className="profileCoverImg"
                 src={
-                  user.coverPicture
-                    ? PF + user.coverPicture
+                  profileUser.coverPicture
+                    ? PF + profileUser.coverPicture
                     : PF + "person/noCover.png"
                 }
                 alt=""
@@ -63,8 +69,8 @@ export default function Profile() {
               <img
                 className="profileUserImg"
                 src={
-                  user.profilePicture
-                    ? PF + user.profilePicture
+                  profileUser.profilePicture
+                    ? PF + profileUser.profilePicture
                     : PF + "person/noAvatar.png"
                 }
                 alt=""
@@ -92,13 +98,13 @@ export default function Profile() {
               </label>
             </div>
             <div className="profileInfo">
-              <h4 className="profileInfoName">{user.username}</h4>
-              <span className="profileInfoDesc">{user.desc}</span>
+              <h4 className="profileInfoName">{profileUser.username}</h4>
+              <span className="profileInfoDesc">{profileUser.desc}</span>
             </div>
           </div>
           <div className="profileRightBottom">
             <Feed username={username} />
-            <Rightbar user={user} />
+            <Rightbar user={profileUser} />
           </div>
         </div>
       </div>

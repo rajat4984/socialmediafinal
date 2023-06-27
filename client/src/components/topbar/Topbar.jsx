@@ -9,6 +9,7 @@ function Topbar() {
   const { user } = useContext(AuthContext);
   const [search, setSearch] = useState("");
 
+  const [myUser, setMyuser] = useState(user);
   const [update, setUpdate] = useState(search);
   const navigate = useNavigate();
 
@@ -22,7 +23,6 @@ function Topbar() {
     const searchedUser = data.find((item) => {
       return search === item.username;
     });
-    console.log(searchedUser);
 
     if (searchedUser !== undefined) {
       navigate(`/profile/${searchedUser.username}`);
@@ -58,11 +58,12 @@ function Topbar() {
         </div>
       </div>
       <div className="topbarRight">
-        <Link to={`/profile/${user?.username}`}>
+        <Link to={`/profile/${myUser?.username}`}>
+          {console.log(myUser)}
           <img
             src={
-              user?.profilePicture
-                ? PF + user?.profilePicture
+              myUser?.profilePicture
+                ? PF + myUser?.profilePicture
                 : PF + "person/noAvatar.png"
             }
             alt=""
@@ -70,9 +71,9 @@ function Topbar() {
           />
         </Link>
 
-          <span className="topbarLink" onClick={logout}>
-            Logout
-          </span>
+        <span className="topbarLink" onClick={logout}>
+          Logout
+        </span>
       </div>
     </div>
   );
